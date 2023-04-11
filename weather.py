@@ -1,9 +1,14 @@
 import requests
 
-api_key = "92726743c1b91f71118b3a74e931ac01"
-city = "Orlando"
-url = "http://api.openweathermap.org/geo/1.0/direct?q="+city+"&limit=5&appid="+api_key
+city = input("What city would you like the weather for?\n")
+url = 'http://api.weatherapi.com/v1/current.json?key=8107c044436a4e94bdd213631230704&q='+city+'&aqi=no'
 
-requests = requests.get(url)
-json = requests.json()
-print(json)
+try:
+    response = requests.get(url)
+    weather_json = response.json()
+
+    temp = weather_json.get('current').get('temp_f')
+    description = weather_json.get('current').get('condition').get('text')
+    print("Today's weather in", city, "is", description, "and", int(temp), "degrees")
+except AttributeError:
+    print("You must enter a valid city")
